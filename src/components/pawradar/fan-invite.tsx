@@ -157,7 +157,7 @@ export function FanInvite({ initialEvent }: { initialEvent?: FanEvent }) {
         {/* Tiny label mimicking iOS calendar invite header */}
         <div className="paw-rise mb-4 flex items-center justify-center gap-2 text-xs font-medium text-muted-foreground">
           <Sparkles size={13} className="text-primary" />
-          來自 PawRadar 的散步邀請
+          散步邀請
         </div>
 
         {/* The invite card */}
@@ -195,7 +195,6 @@ export function FanInvite({ initialEvent }: { initialEvent?: FanEvent }) {
               icon={<MapPin size={15} />}
               label="預計地點"
               primary={event.location}
-              secondary="精確位置不會揭露"
             />
             {event.notes && (
               <DetailRow
@@ -226,8 +225,8 @@ export function FanInvite({ initialEvent }: { initialEvent?: FanEvent }) {
                 </>
               )}
             </Button>
-            <p className="mt-2.5 text-center text-[11px] text-muted-foreground">
-              無需註冊・無需下載 App・按下即享
+            <p className="mt-2 text-center text-[11px] text-muted-foreground">
+              免註冊・免下載
             </p>
           </div>
         </div>
@@ -241,7 +240,7 @@ export function FanInvite({ initialEvent }: { initialEvent?: FanEvent }) {
 
         {/* Footer line */}
         <div className="mt-6 text-center text-[11px] text-muted-foreground">
-          PawRadar — 把雲吸狗變成預約制偶遇
+          PawRadar
         </div>
       </div>
     </div>

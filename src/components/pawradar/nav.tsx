@@ -75,7 +75,7 @@ export function PawNav() {
               className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-sm transition-transform hover:scale-[1.03] active:scale-[0.98]"
             >
               <Sparkles size={15} />
-              建立散步連結
+              建立連結
             </a>
           )}
         </div>

@@ -135,10 +135,8 @@ export function EventForm() {
           <PawPrint size={18} />
         </div>
         <div>
-          <h2 className="text-lg font-semibold">建立新的散步連結</h2>
-          <p className="text-xs text-muted-foreground">
-            填寫資訊，產生可放進 IG Link-in-bio 的短連結
-          </p>
+          <h2 className="text-lg font-semibold">建立散步連結</h2>
+          <p className="text-xs text-muted-foreground">放進 IG 個人簡介即可</p>
         </div>
       </div>
 
@@ -200,7 +198,7 @@ export function EventForm() {
             icon={<MapPin size={14} />}
           >
             <Input
-              placeholder="例：大安森林公園（不必精確地址）"
+              placeholder="例：大安森林公園"
               className="bg-background"
               {...register('location')}
             />
@@ -214,7 +212,7 @@ export function EventForm() {
             icon={<StickyNote size={14} />}
           >
             <Textarea
-              placeholder="例：穿著紅色牽繩、會在草坪區出沒"
+              placeholder="例：穿紅色牽繩"
               className="min-h-20 resize-none bg-background"
               {...register('notes')}
             />
@@ -236,13 +234,10 @@ export function EventForm() {
           ) : (
             <>
               <CalendarClock size={16} />
-              產生短連結
+              產生連結
             </>
           )}
         </Button>
-        <p className="text-xs text-muted-foreground">
-          建立後即可複製連結放進 IG 個人簡介
-        </p>
       </div>
     </form>
   );
@@ -309,17 +304,12 @@ function CreatedPanel({
         </div>
         <div>
           <h2 className="text-lg font-semibold">連結建立成功！</h2>
-          <p className="text-xs text-muted-foreground">
-            把下面這段連結放進 IG 個人簡介的 Link-in-bio
-          </p>
+          <p className="text-xs text-muted-foreground">放進 IG 個人簡介即可</p>
         </div>
       </div>
 
       <div className="mt-5 rounded-2xl border border-border bg-card p-4">
-        <div className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-          你的 PawRadar 連結
-        </div>
-        <div className="mt-1.5 flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="font-mono text-lg font-semibold text-primary">
             {brandLink}
           </div>
@@ -335,7 +325,7 @@ function CreatedPanel({
           </Button>
         </div>
         <div className="mt-2 break-all rounded-lg bg-background/60 px-2.5 py-1.5 text-[10px] text-muted-foreground">
-          實際連結：{realLink}
+          {realLink}
         </div>
       </div>
 
@@ -351,7 +341,7 @@ function CreatedPanel({
           onClick={onPreview}
           className="gap-2 rounded-full bg-primary px-5 text-primary-foreground shadow-sm transition-transform hover:scale-[1.02] active:scale-[0.98]"
         >
-          預覽粉絲看到的邀請卡
+          預覽邀請卡
         </Button>
         <Button
           type="button"
@@ -359,7 +349,7 @@ function CreatedPanel({
           onClick={onAnother}
           className="gap-2 rounded-full"
         >
-          再建立一個
+          再建一個
         </Button>
       </div>
     </div>

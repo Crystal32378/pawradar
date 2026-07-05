@@ -14,7 +14,7 @@ export function PawFooter() {
           </span>
         </div>
         <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-          <span>把雲吸狗變成預約制偶遇</span>
+          <span>雲吸狗 → 預約制偶遇</span>
           <Heart size={12} className="text-primary" fill="currentColor" />
         </div>
       </div>

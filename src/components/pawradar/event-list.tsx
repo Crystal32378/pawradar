@@ -89,9 +89,7 @@ export function EventList() {
           </div>
           <div>
             <h2 className="text-lg font-semibold">你的散步連結</h2>
-            <p className="text-xs text-muted-foreground">
-              唯一重要的 KPI：被加入日曆的次數
-            </p>
+            <p className="text-xs text-muted-foreground">唯一 KPI：被加入日曆次數</p>
           </div>
         </div>
         {events && events.length > 0 && (
@@ -146,7 +144,7 @@ function EmptyState() {
       </div>
       <h3 className="mt-4 text-sm font-semibold">還沒有散步連結</h3>
       <p className="mt-1 max-w-xs text-xs text-muted-foreground">
-        在左邊建立第一個散步事件，產生連結後就能放進 IG Link-in-bio
+        在左邊建立第一個
       </p>
     </div>
   );
