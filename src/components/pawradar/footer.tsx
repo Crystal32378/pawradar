@@ -10,11 +10,11 @@ export function PawFooter() {
         <div className="flex items-center gap-3">
           <PawRadarLogo size="sm" />
           <span className="text-xs text-muted-foreground">
-            v0.1 · Plugin Phase 1
+            v0.1 · Columbia 校友版
           </span>
         </div>
         <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-          <span>雲吸狗 → 預約制偶遇</span>
+          <span>快來遇見狗狗大寶貝</span>
           <Heart size={12} className="text-primary" fill="currentColor" />
         </div>
       </div>

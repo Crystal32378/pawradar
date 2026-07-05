@@ -3,7 +3,7 @@
 import { CalendarHeart, MapPin, ShieldCheck, Zap } from 'lucide-react';
 
 const VALUE_PROPS = [
-  { icon: Zap, title: '零摩擦', body: '粉絲按一下就加入日曆。' },
+  { icon: Zap, title: '零摩擦', body: '鄰居粉絲按一下加入日曆。' },
   { icon: CalendarHeart, title: '原生日曆', body: '蘋果、谷歌幫你推播。' },
   { icon: ShieldCheck, title: '隱私安全', body: '只給預計地點，不追蹤。' },
 ] as const;
@@ -21,15 +21,15 @@ export function PawHero() {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-70" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
           </span>
-          Instagram 寵物生態系・互動外掛
+          Columbia 校友狗聚・互動外掛
         </div>
 
         <h1 className="mt-5 max-w-3xl text-4xl font-bold leading-[1.1] tracking-tight sm:text-5xl md:text-6xl">
-          把「雲吸狗」
+          快來遇見
           <br className="hidden sm:block" />
-          變成{' '}
+          你的{' '}
           <span className="relative whitespace-nowrap">
-            <span className="relative z-10 text-primary">預約制偶遇</span>
+            <span className="relative z-10 text-primary">狗狗大寶貝！</span>
             <svg
               className="absolute -bottom-1 left-0 z-0 w-full"
               viewBox="0 0 200 12"
@@ -39,7 +39,7 @@ export function PawHero() {
             >
               <path
                 d="M2 9C50 3 150 3 198 9"
-                stroke="oklch(0.72 0.16 155)"
+                stroke="oklch(0.5 0.17 245)"
                 strokeWidth="3.5"
                 strokeLinecap="round"
               />
@@ -48,7 +48,7 @@ export function PawHero() {
         </h1>
 
         <p className="mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-          把散步變成日曆連結，粉絲按一下就加入。不用下載 App。
+          把散步變成日曆連結，鄰居粉絲按一下就加入。不用下載 App。
         </p>
 
         <div className="mt-6 flex flex-wrap items-center gap-3">
