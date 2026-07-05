@@ -6,7 +6,10 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  // PostgreSQL for production (Neon free tier on Vercel).
+  // For local SQLite dev, switch this to "sqlite" and use
+  // DATABASE_URL="file:./db/local.db" — see DEPLOY.md for details.
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
