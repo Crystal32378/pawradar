@@ -1,0 +1,38 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  // PostgreSQL for production (Neon free tier on Vercel).
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// A PawRadar walk event created by a pet KOL.
+model Event {
+  /// Internal cuid primary key
+  id        String   @id @default(cuid())
+  /// Short, shareable slug used in paw.rs/<slug> links (unique)
+  slug      String   @unique
+  /// Display name of the pet, e.g. "麻糬"
+  petName   String
+  /// Owner's Instagram handle, e.g. "@corgi_mochi"
+  ownerHandle String
+  /// When the walk starts (UTC)
+  walkStart DateTime
+  /// When the walk ends (UTC), default walkStart + 1 hour
+  walkEnd   DateTime
+  /// Approximate location, e.g. "大安森林公園"
+  location  String
+  /// Optional notes shown to fans, e.g. "穿著紅色牽繩"
+  notes     String?
+  /// KPI: how many fans added this event to their calendar
+  addCount  Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([slug])
+}
