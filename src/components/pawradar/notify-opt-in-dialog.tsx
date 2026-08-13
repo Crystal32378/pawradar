@@ -123,7 +123,7 @@ export function NotifyOptInDialog({
       <DialogContent className="max-w-md rounded-3xl p-0 overflow-hidden">
         <DialogHeader className="p-6 pb-4">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent/20 text-accent-foreground">
               <Bell size={18} />
             </div>
             <div>

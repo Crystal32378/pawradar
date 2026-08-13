@@ -252,7 +252,7 @@ function Field({
   return (
     <div className="space-y-1.5">
       <Label className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
-        {icon && <span className="text-primary">{icon}</span>}
+        {icon && <span className="text-accent-foreground">{icon}</span>}
         {label}
       </Label>
       {children}
@@ -291,9 +291,9 @@ function CreatedPanel({
   };
 
   return (
-    <div className="rounded-3xl border border-primary/30 bg-gradient-to-br from-primary/5 to-accent/5 p-5 shadow-sm sm:p-7">
+    <div className="rounded-3xl border border-primary/30 bg-gradient-to-br from-primary/5 to-success/5 p-5 shadow-sm sm:p-7">
       <div className="flex items-center gap-2.5">
-        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent text-accent-foreground">
+        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-success text-success-foreground">
           <Check size={20} />
         </div>
         <div>

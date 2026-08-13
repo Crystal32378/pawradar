@@ -40,7 +40,7 @@ export function PawHero() {
             >
               <path
                 d="M2 9C50 3 150 3 198 9"
-                stroke="oklch(0.55 0.13 145)"
+                stroke="var(--accent)"
                 strokeWidth="3.5"
                 strokeLinecap="round"
               />
@@ -71,7 +71,7 @@ export function PawHero() {
                 key={v.title}
                 className="flex items-center gap-3 rounded-2xl border border-border bg-card/70 p-4 backdrop-blur"
               >
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-accent/20 text-accent-foreground">
                   <Icon size={18} />
                 </div>
                 <div className="min-w-0">

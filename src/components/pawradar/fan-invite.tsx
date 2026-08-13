@@ -165,7 +165,7 @@ export function FanInvite({ initialEvent }: { initialEvent?: FanEvent }) {
       <div className="relative mx-auto max-w-md px-4 py-8 sm:py-12">
         {/* Tiny label mimicking iOS calendar invite header */}
         <div className="paw-rise mb-4 flex items-center justify-center gap-2 text-xs font-medium text-muted-foreground">
-          <Sparkles size={13} className="text-primary" />
+          <Sparkles size={13} className="text-accent-foreground" />
           散步邀請
         </div>
 
@@ -282,7 +282,7 @@ function DetailRow({
 }) {
   return (
     <div className="flex items-start gap-3">
-      <div className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+      <div className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-accent/20 text-accent-foreground">
         {icon}
       </div>
       <div className="min-w-0 flex-1">
@@ -301,7 +301,7 @@ function DetailRow({
 function TrustItem({ icon, label }: { icon: React.ReactNode; label: string }) {
   return (
     <div className="flex flex-col items-center gap-1 rounded-xl border border-border bg-card/60 px-2 py-2.5">
-      <span className="text-primary">{icon}</span>
+      <span className="text-accent-foreground">{icon}</span>
       <span className="text-[10px] font-medium text-muted-foreground">
         {label}
       </span>
