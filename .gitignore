@@ -52,3 +52,7 @@ prompt
 server.log
 # Skills directory
 /skills/
+
+# Local SQLite database (Phase 1 dev only — production uses Neon Postgres)
+db/*.db
+db/*.db-journal
