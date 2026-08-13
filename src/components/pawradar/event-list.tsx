@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
@@ -31,14 +32,14 @@ interface DashboardEvent {
 
 export function EventList() {
   const dashboardVersion = usePawRadar((s) => s.dashboardVersion);
-  const enterFanView = usePawRadar((s) => s.enterFanView);
+  const router = useRouter();
   const [events, setEvents] = useState<DashboardEvent[] | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    fetch('/api/events')
+    fetch('/api/dashboard/events')
       .then((r) => r.json())
       .then((data) => {
         if (cancelled) return;
@@ -61,7 +62,7 @@ export function EventList() {
   const handleDelete = async (slug: string) => {
     if (!confirm('確定要刪除這個散步連結？')) return;
     try {
-      const res = await fetch(`/api/events/${slug}`, { method: 'DELETE' });
+      const res = await fetch(`/api/dashboard/events/${slug}`, { method: 'DELETE' });
       if (!res.ok) throw new Error();
       setEvents((prev) => prev?.filter((e) => e.slug !== slug) ?? null);
       toast.success('已刪除');
@@ -114,17 +115,12 @@ export function EventList() {
               <EventCard
                 key={e.slug}
                 event={e}
-                onPreview={() =>
-                  enterFanView({
-                    slug: e.slug,
-                    petName: e.petName,
-                    ownerHandle: e.ownerHandle,
-                    walkStart: e.walkStart,
-                    walkEnd: e.walkEnd,
-                    location: e.location,
-                    notes: e.notes,
-                  })
-                }
+                onPreview={() => {
+                  // Navigate to public fan view (root with ?event=slug)
+                  // The fan view renders server-side from this URL — no client
+                  // state sharing needed between /dashboard and /.
+                  router.push(`/?event=${e.slug}`);
+                }}
                 onCopy={() => copyLink(e.slug)}
                 onDelete={() => handleDelete(e.slug)}
               />
@@ -203,8 +199,8 @@ function EventCard({ event, onPreview, onCopy, onDelete }: EventCardProps) {
             </span>
           </div>
           <div className="mt-2 flex items-center gap-2">
-            <code className="rounded-md bg-secondary px-2 py-0.5 text-[11px] font-medium text-secondary-foreground">
-              paw.rs/{event.slug}
+            <code className="rounded-md bg-secondary px-2 py-0.5 text-[11px] font-medium text-secondary-foreground break-all">
+              ?event={event.slug}
             </code>
             <span className="inline-flex items-center gap-1 rounded-md bg-accent/10 px-2 py-0.5 text-[11px] font-medium text-accent-foreground">
               <TrendingUp size={11} />

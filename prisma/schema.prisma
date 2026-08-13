@@ -7,17 +7,35 @@ generator client {
 
 datasource db {
   // PostgreSQL for production (Neon free tier on Vercel).
-  // For local SQLite dev, switch this to "sqlite" and use
-  // DATABASE_URL="file:./db/local.db" — see DEPLOY.md for details.
-  provider = "postgresql"
+  // For local SQLite dev, swap this to "sqlite" temporarily:
+  //   provider = "sqlite"
+  //   DATABASE_URL="file:./db/local.db"
+  // See DEPLOY.md and MIGRATION.md for the production/development split.
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
-/// A PawRadar walk event created by a pet KOL.
+/// A PawRadar creator account (KOL). Owns one or more events.
+/// Phase 1 introduces ownership; pre-existing events are migrated
+/// to a designated admin account (see MIGRATION.md).
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  igHandle  String?  // Optional — claimed IG handle for ownership proof
+  password  String   // Hashed via bcrypt; never plaintext
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  events      Event[]
+  subscriptions Subscription[]
+}
+
+/// A PawRadar walk event created by a User (KOL).
 model Event {
   /// Internal cuid primary key
   id        String   @id @default(cuid())
-  /// Short, shareable slug used in paw.rs/<slug> links (unique)
+  /// Short, shareable slug used in shared links (unique)
   slug      String   @unique
   /// Display name of the pet, e.g. "麻糬"
   petName   String
@@ -25,7 +43,7 @@ model Event {
   ownerHandle String
   /// When the walk starts (UTC)
   walkStart DateTime
-  /// When the walk ends (UTC), default walkStart + 1 hour
+  /// When the walk ends (UTC)
   walkEnd   DateTime
   /// Approximate location, e.g. "大安森林公園"
   location  String
@@ -33,8 +51,49 @@ model Event {
   notes     String?
   /// KPI: how many fans added this event to their calendar
   addCount  Int      @default(0)
+  /// Phase 1 migration: ownerId is required for new events,
+  /// nullable so existing rows can be back-filled.
+  ownerId   String?
+  owner     User?    @relation(fields: [ownerId], references: [id], onDelete: SetNull)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  subscriptions Subscription[]
+
   @@index([slug])
+  @@index([ownerId])
+}
+
+/// A fan's opt-in subscription to a specific event for OneSignal Web Push.
+/// Created only after the fan explicitly taps "Notify me about changes"
+/// in the post-ICS opt-in dialog (see Phase 2 OneSignal design).
+///
+/// Lifecycle:
+///   active  → fan opted in, receives change/cancel notifications
+///   muted   → fan paused notifications (future feature)
+///   revoked → fan explicitly revoked; playerId retained for audit,
+///             no further notifications sent
+///
+/// playerId is OneSignal's subscription ID. We never store device
+/// tokens — OneSignal manages that abstraction.
+model Subscription {
+  id        String   @id @default(cuid())
+  /// OneSignal subscription/player ID
+  playerId  String
+  /// The event this subscription is tied to.
+  /// Stored as a relation rather than slug string so renames are safe.
+  eventSlug String
+  event     Event    @relation(fields: [eventSlug], references: [slug], onDelete: Cascade)
+  /// Optional: link to a User if the fan ever signs in (future KOL-fan flow).
+  /// Today all subscriptions are anonymous fan opt-ins.
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  /// Lifecycle state — see model docstring above
+  state     String   @default("active") // "active" | "muted" | "revoked"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([playerId, eventSlug])
+  @@index([eventSlug])
+  @@index([userId])
 }

@@ -16,6 +16,8 @@ import {
 } from 'lucide-react';
 import { usePawRadar } from '@/store/pawradar';
 import { toast } from 'sonner';
+import { isOnesignalEnabled } from '@/lib/onesignal-config';
+import { NotifyOptInDialog } from './notify-opt-in-dialog';
 
 interface FanEvent {
   slug: string;
@@ -39,6 +41,7 @@ export function FanInvite({ initialEvent }: { initialEvent?: FanEvent }) {
   const [loading, setLoading] = useState(!initialEvent);
   const [error, setError] = useState<string | null>(null);
   const [adding, setAdding] = useState(false);
+  const [showNotifyDialog, setShowNotifyDialog] = useState(false);
 
   useEffect(() => {
     if (initialEvent) {
@@ -86,6 +89,11 @@ export function FanInvite({ initialEvent }: { initialEvent?: FanEvent }) {
       await new Promise((r) => setTimeout(r, 400));
       window.location.href = `/api/ics/${event.slug}`;
       toast.success('已啟動日曆邀請 — 請在跳出的視窗按下「加入」');
+      // After ICS download initiates, show opt-in dialog if feature flag on.
+      // Delay slightly so the download toast is visible first.
+      if (isOnesignalEnabled) {
+        setTimeout(() => setShowNotifyDialog(true), 1500);
+      }
     } catch {
       toast.error('下載失敗，請再試一次');
     } finally {
@@ -243,6 +251,17 @@ export function FanInvite({ initialEvent }: { initialEvent?: FanEvent }) {
           PawRadar
         </div>
       </div>
+
+      {/* OneSignal opt-in dialog — only renders when feature flag enabled.
+          Shows after ICS download. See notify-opt-in-dialog.tsx */}
+      {event && (
+        <NotifyOptInDialog
+          eventSlug={event.slug}
+          petName={event.petName}
+          open={showNotifyDialog}
+          onOpenChange={setShowNotifyDialog}
+        />
+      )}
     </div>
   );
 }

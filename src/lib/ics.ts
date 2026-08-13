@@ -73,7 +73,7 @@ export function generateIcs(event: IcsEventInput): string {
   if (event.notes && event.notes.trim().length > 0) {
     descriptionParts.push(`備註：${event.notes}`);
   }
-  descriptionParts.push('由 PawRadar 建立 — Columbia 校友狗聚');
+  descriptionParts.push('由 PawRadar 建立 — 把散步變成預約制偶遇');
 
   const lines: string[] = [
     'BEGIN:VCALENDAR',

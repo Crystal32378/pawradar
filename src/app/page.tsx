@@ -1,16 +1,22 @@
 import { PawRadarShell } from '@/components/pawradar/pawradar-shell';
 import { db } from '@/lib/db';
+import Link from 'next/link';
+import { LayoutDashboard, Sparkles } from 'lucide-react';
 
 interface HomePageProps {
   searchParams: Promise<{ event?: string }>;
 }
 
 /**
- * Single user-visible route (`/`).
+ * Public landing route (`/`).
  *
- * If the URL contains `?event=<slug>`, we look the event up server-side and
- * hand it to the client shell so the fan view renders immediately without
- * a loading spinner. Otherwise we render the KOL dashboard.
+ * Phase 1 change: the creator dashboard has moved to `/dashboard` (auth required).
+ * The landing page now serves two roles:
+ *   1. Fan public view when `?event=<slug>` is present
+ *   2. Hero landing + CTA pointing to /dashboard (for creators)
+ *
+ * The "create link" button no longer opens a form on `/` — it sends
+ * creators to /dashboard, where they sign in or sign up.
  */
 export default async function Home({ searchParams }: HomePageProps) {
   const { event: slug } = await searchParams;

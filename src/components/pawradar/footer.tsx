@@ -10,7 +10,7 @@ export function PawFooter() {
         <div className="flex items-center gap-3">
           <PawRadarLogo size="sm" />
           <span className="text-xs text-muted-foreground">
-            v0.1 · Columbia 校友版
+            v0.2 · Web Plugin
           </span>
         </div>
         <div className="flex items-center gap-1.5 text-xs text-muted-foreground">

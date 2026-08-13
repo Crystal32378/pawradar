@@ -1,7 +1,7 @@
 # 🐾 PawRadar
 
 > **快來遇見你的狗狗大寶貝！**
-> Columbia 校友狗聚的互動外掛 — 把散步變成日曆連結。
+> 寵物 KOL 的互動外掛 — 把散步變成日曆連結。
 
 [![Made with Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://www.typescriptlang.org)
@@ -24,8 +24,8 @@ PawRadar 不是另一個 App，是 Instagram 寵物生態系中的「互動外�
    │  1. 建立散步事件      │
    │     (時間/地點/備註)   │
    │                      │
-   │  2. 拿到短連結         │
-   │     paw.rs/meet_xxx  │
+   │  2. 拿到分享連結       │
+   │     /?event=meet_xxx │
    │                      │
    │  3. 貼進 IG bio       │
    │──────────────────────►│
@@ -52,6 +52,7 @@ PawRadar 不是另一個 App，是 Instagram 寵物生態系中的「互動外�
 - **Framework**：Next.js 16（App Router）
 - **Language**：TypeScript 5
 - **Database**：PostgreSQL（Neon free tier）+ Prisma ORM
+- **Auth**：NextAuth.js v4（credentials provider, JWT sessions）
 - **Styling**：Tailwind CSS 4 + shadcn/ui
 - **State**：Zustand + React Hook Form + Zod
 - **ICS Generation**：自製 RFC 5545 相容產生器（無第三方依賴）
@@ -62,31 +63,34 @@ PawRadar 不是另一個 App，是 Instagram 寵物生態系中的「互動外�
 src/
 ├── app/
 │   ├── api/
-│   │   ├── events/              # CRUD: GET 列表 / POST 建立
-│   │   │   └── [slug]/          # GET 單一 / DELETE
-│   │   │       └── track/       # POST KPI +1
-│   │   └── ics/[slug]/          # GET 動態 .ics 下載
-│   ├── page.tsx                 # Server Component, reads ?event=slug
-│   ├── layout.tsx               # PawRadar metadata + Sonner
-│   └── globals.css              # Columbia blue palette
+│   │   ├── auth/[nextauth]/   # NextAuth handler
+│   │   ├── auth/signup/       # Creator account creation
+│   │   ├── dashboard/events/  # Auth'd: list/create + delete
+│   │   ├── events/[slug]/     # Public: fan event detail + track KPI
+│   │   └── ics/[slug]/        # Public: .ics download
+│   ├── dashboard/page.tsx     # Auth'd creator dashboard
+│   ├── login / signup          # Auth pages
+│   ├── page.tsx                # Public landing + fan view
+│   ├── layout.tsx              # Metadata + SessionProvider
+│   └── globals.css             # Warm terracotta palette
 ├── components/
-│   ├── ui/                      # shadcn/ui
+│   ├── ui/                     # shadcn/ui
 │   └── pawradar/
-│       ├── pawradar-shell.tsx   # Top-level view router
-│       ├── hero.tsx             # Landing hero
-│       ├── event-form.tsx       # KOL 建立事件表單
-│       ├── event-list.tsx       # KOL 事件清單 + KPI
-│       ├── fan-invite.tsx       # 粉絲擬真日曆邀請卡
-│       ├── nav.tsx / footer.tsx / logo.tsx
+│       ├── pawradar-shell.tsx  # Public landing shell
+│       ├── dashboard-shell.tsx # Auth'd creator shell
+│       ├── hero / event-form / event-list / fan-invite / nav / footer / logo
 ├── lib/
+│   ├── auth.ts                  # NextAuth config
+│   ├── auth-server.ts           # Server helpers (requireCreatorSession, requireEventOwnership)
 │   ├── ics.ts                   # ICS generator (RFC 5545)
 │   ├── slug.ts                  # Unique slug generator
+│   ├── rate-limit.ts            # In-memory rate limiter (Phase 1 stopgap)
 │   ├── validations.ts           # Zod schema
-│   └── db.ts                    # Prisma client
+│   └── db.ts                    # Prisma client (cached on globalThis)
 ├── store/
-│   └── pawradar.ts              # Zustand view state
+│   └── pawradar.ts              # Zustand fan-view state
 └── prisma/
-    └── schema.prisma            # Event model
+    └── schema.prisma            # User + Event + Subscription models
 ```
 
 ## 部署
@@ -98,7 +102,7 @@ src/
 ```bash
 # 1. 設環境變數
 cp .env.example .env
-# 編輯 .env 填入 Neon 連結
+# 編輯 .env 填入 Neon 連結 + NEXTAUTH_SECRET
 
 # 2. 安裝 + 初始化資料庫
 bun install
@@ -107,6 +111,22 @@ bun run db:push
 # 3. 本地跑
 bun run dev
 ```
+
+## 安全模型
+
+PawRadar 區分三種流量：
+
+| 路徑 | 認證 | 用途 |
+|------|------|------|
+| `GET /` | 公開 | 首頁 + fan view (`?event=slug`) |
+| `GET /api/events/[slug]` | 公開 | Fan 取得事件詳情 |
+| `GET /api/ics/[slug]` | 公開 | Fan 下載 .ics |
+| `POST /api/events/[slug]/track` | 公開 (rate-limited) | KPI +1 |
+| `GET/POST /dashboard` | 需登入 | KOL 後台 |
+| `GET/POST /api/dashboard/events` | 需登入 | KOL 列出/建立事件 |
+| `DELETE /api/dashboard/events/[slug]` | 需登入 + ownership | KOL 刪除自己事件 |
+
+匿名訪客無法列出所有事件、無法建立事件、無法刪除他人事件。每個事件都強制 ownership 檢查。
 
 ## 商業模式（Phase 1）
 
@@ -120,4 +140,4 @@ MIT — 見 [LICENSE](LICENSE)
 
 ---
 
-**Columbia 校友版** · 用哥大標準色打造 · 把雲吸狗變成預約制偶遇 🐾
+**PawRadar** · 把散步變成預約制偶遇 🐾

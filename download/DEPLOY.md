@@ -35,7 +35,7 @@ cd ~/pawradar
 # 初始化 git
 git init
 git add .
-git commit -m "PawRadar v0.1 — Columbia alumni edition"
+git commit -m "PawRadar v0.2 — security hardening + rebrand"
 
 # 把下面這串換成你剛建的 repo 網址
 git remote add origin https://github.com/YOUR_USERNAME/pawradar.git
@@ -111,12 +111,14 @@ bun run db:push
 
 打開 `https://pawradar-xxx.vercel.app`：
 
-1. 應該看到「快來遇見你的狗狗大寶貝！」+ Columbia 藍配色
-2. 填表建立一個散步事件 → 點「預覽邀請卡」
-3. 點「加入日曆」→ 應該下載 .ics 檔
-4. 在手機上打開那個 .ics，原生日曆會跳出邀請
+1. 應該看到「快來遇見你的狗狗大寶貝！」+ 暖色 terracotta 配色
+2. 點「建立散步連結」會跳到 /login（因為這輪加入了認證）
+3. 用 /signup 建立帳號後進入 /dashboard
+4. 在 dashboard 建立事件 → 點「預覽邀請卡」
+5. 點「加入日曆」→ 應該下載 .ics 檔
+6. 在手機上打開那個 .ics，原生日曆會跳出邀請
 
-把那個網址貼到 IG bio、傳給 Columbia 校友群組，就上線了。
+把那個網址貼到 IG bio、傳給粉絲群組，就上線了。
 
 ---
 

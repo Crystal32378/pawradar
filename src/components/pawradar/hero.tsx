@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { CalendarHeart, MapPin, ShieldCheck, Zap } from 'lucide-react';
 
 const VALUE_PROPS = [
@@ -21,7 +22,7 @@ export function PawHero() {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-70" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
           </span>
-          Columbia 校友狗聚・互動外掛
+          寵物 KOL · 散步連結產生器
         </div>
 
         <h1 className="mt-5 max-w-3xl text-4xl font-bold leading-[1.1] tracking-tight sm:text-5xl md:text-6xl">
@@ -39,7 +40,7 @@ export function PawHero() {
             >
               <path
                 d="M2 9C50 3 150 3 198 9"
-                stroke="oklch(0.5 0.17 245)"
+                stroke="oklch(0.55 0.13 145)"
                 strokeWidth="3.5"
                 strokeLinecap="round"
               />
@@ -52,13 +53,13 @@ export function PawHero() {
         </p>
 
         <div className="mt-6 flex flex-wrap items-center gap-3">
-          <a
-            href="#create"
+          <Link
+            href="/dashboard"
             className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-transform hover:scale-[1.03] active:scale-[0.98]"
           >
             <MapPin size={15} />
             建立散步連結
-          </a>
+          </Link>
         </div>
 
         {/* Compact value props */}
