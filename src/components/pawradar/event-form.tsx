@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
@@ -53,7 +54,7 @@ function defaultWalkStart(): string {
 
 export function EventForm() {
   const bumpDashboard = usePawRadar((s) => s.bumpDashboard);
-  const enterFanView = usePawRadar((s) => s.enterFanView);
+  const router = useRouter();
   const [created, setCreated] = useState<CreatedEvent | null>(null);
 
   const {
@@ -79,7 +80,7 @@ export function EventForm() {
 
   const onSubmit = async (data: CreateEventInput) => {
     try {
-      const res = await fetch('/api/events', {
+      const res = await fetch('/api/dashboard/events', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -113,15 +114,9 @@ export function EventForm() {
   };
 
   if (created) {
-    return <CreatedPanel event={created} onAnother={handleReset} onPreview={() => enterFanView({
-      slug: created.slug,
-      petName: created.petName,
-      ownerHandle: created.ownerHandle,
-      walkStart: created.walkStart,
-      walkEnd: created.walkEnd,
-      location: created.location,
-      notes: created.notes,
-    })} />;
+    return <CreatedPanel event={created} onAnother={handleReset} onPreview={() => {
+      router.push(`/?event=${created.slug}`);
+    }} />;
   }
 
   return (
@@ -276,18 +271,17 @@ function CreatedPanel({
   onPreview: () => void;
 }) {
   const [copied, setCopied] = useState(false);
-  // Cosmetic paw.rs/<slug> link — the real shareable URL is the page itself
-  // with the ?event=<slug> query parameter, but the brand link is what
-  // users put in their IG bio.
-  const brandLink = `paw.rs/${event.slug}`;
-  const realLink =
+  // Phase 1 fix: previously displayed a cosmetic `paw.rs/<slug>` brand link
+  // that doesn't exist (paw.rs is owned by an unrelated Serbian pet site).
+  // Now we show the actual shareable URL the fan will visit.
+  const shareLink =
     typeof window !== 'undefined'
       ? `${window.location.origin}/?event=${event.slug}`
       : `/?event=${event.slug}`;
 
   const copyLink = async () => {
     try {
-      await navigator.clipboard.writeText(realLink);
+      await navigator.clipboard.writeText(shareLink);
       setCopied(true);
       toast.success('已複製連結到剪貼簿');
       setTimeout(() => setCopied(false), 1800);
@@ -310,22 +304,19 @@ function CreatedPanel({
 
       <div className="mt-5 rounded-2xl border border-border bg-card p-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="font-mono text-lg font-semibold text-primary">
-            {brandLink}
+          <div className="font-mono text-sm font-semibold text-primary break-all">
+            {shareLink}
           </div>
           <Button
             type="button"
             size="sm"
             onClick={copyLink}
             variant="outline"
-            className="gap-1.5 rounded-full"
+            className="gap-1.5 rounded-full flex-shrink-0"
           >
             {copied ? <Check size={14} /> : null}
             {copied ? '已複製' : '複製連結'}
           </Button>
-        </div>
-        <div className="mt-2 break-all rounded-lg bg-background/60 px-2.5 py-1.5 text-[10px] text-muted-foreground">
-          {realLink}
         </div>
       </div>
 

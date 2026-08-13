@@ -16,6 +16,8 @@ import {
 } from 'lucide-react';
 import { usePawRadar } from '@/store/pawradar';
 import { toast } from 'sonner';
+import { isOnesignalEnabled } from '@/lib/onesignal-config';
+import { NotifyOptInDialog } from './notify-opt-in-dialog';
 
 interface FanEvent {
   slug: string;
@@ -26,6 +28,7 @@ interface FanEvent {
   location: string;
   notes: string | null;
   addCount?: number;
+  status: 'active' | 'cancelled';
 }
 
 /**
@@ -39,6 +42,7 @@ export function FanInvite({ initialEvent }: { initialEvent?: FanEvent }) {
   const [loading, setLoading] = useState(!initialEvent);
   const [error, setError] = useState<string | null>(null);
   const [adding, setAdding] = useState(false);
+  const [showNotifyDialog, setShowNotifyDialog] = useState(false);
 
   useEffect(() => {
     if (initialEvent) {
@@ -86,6 +90,11 @@ export function FanInvite({ initialEvent }: { initialEvent?: FanEvent }) {
       await new Promise((r) => setTimeout(r, 400));
       window.location.href = `/api/ics/${event.slug}`;
       toast.success('已啟動日曆邀請 — 請在跳出的視窗按下「加入」');
+      // After ICS download initiates, show opt-in dialog if feature flag on.
+      // Delay slightly so the download toast is visible first.
+      if (isOnesignalEnabled) {
+        setTimeout(() => setShowNotifyDialog(true), 1500);
+      }
     } catch {
       toast.error('下載失敗，請再試一次');
     } finally {
@@ -171,7 +180,7 @@ export function FanInvite({ initialEvent }: { initialEvent?: FanEvent }) {
                 PawRadar 邀請
               </div>
               <h1 className="mt-3 text-2xl font-bold leading-tight">
-                {event.petName}的散步時間
+                  {event.status === 'cancelled' ? `${event.petName}的散步已取消` : `${event.petName}的散步時間`}
               </h1>
               <p className="mt-1 text-xs text-primary-foreground/80">
                 主理人 {event.ownerHandle}
@@ -209,11 +218,13 @@ export function FanInvite({ initialEvent }: { initialEvent?: FanEvent }) {
           <div className="border-t border-border bg-secondary/30 px-6 py-5">
             <Button
               onClick={handleAddToCalendar}
-              disabled={adding}
+              disabled={adding || event.status === 'cancelled'}
               size="lg"
               className="w-full gap-2 rounded-2xl bg-primary py-6 text-base font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-transform hover:scale-[1.02] active:scale-[0.99]"
             >
-              {adding ? (
+              {event.status === 'cancelled' ? (
+                <>活動已取消</>
+              ) : adding ? (
                 <>
                   <span className="h-4 w-4 animate-spin rounded-full border-2 border-primary-foreground/40 border-t-primary-foreground" />
                   準備日曆邀請中…
@@ -243,6 +254,17 @@ export function FanInvite({ initialEvent }: { initialEvent?: FanEvent }) {
           PawRadar
         </div>
       </div>
+
+      {/* OneSignal opt-in dialog — only renders when feature flag enabled.
+          Shows after ICS download. See notify-opt-in-dialog.tsx */}
+      {event && (
+        <NotifyOptInDialog
+          eventSlug={event.slug}
+          petName={event.petName}
+          open={showNotifyDialog}
+          onOpenChange={setShowNotifyDialog}
+        />
+      )}
     </div>
   );
 }

@@ -42,3 +42,12 @@ export const createEventSchema = z.object({
 });
 
 export type CreateEventInput = z.infer<typeof createEventSchema>;
+
+export const updateEventSchema = createEventSchema.partial().extend({
+  status: z.enum(['active', 'cancelled']).optional(),
+}).refine(
+  (value) => Object.keys(value).length > 0,
+  '至少要提供一個要更新的欄位',
+);
+
+export type UpdateEventInput = z.infer<typeof updateEventSchema>;

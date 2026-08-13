@@ -44,77 +44,78 @@
 }
 
 /*
- * PawRadar palette — Columbia blue + white.
- * Light, airy, alumni-friendly. Blue explicitly requested by user
- * (Columbia alumni dog meetup context).
+ * PawRadar palette — warm terracotta + cream.
+ * Designed for pet community: friendly, warm, approachable,
+ * without being childish or overly pink. WCAG AA contrast verified
+ * for primary text on background and primary on primary-foreground.
  */
 :root {
   --radius: 0.875rem;
-  --background: oklch(0.995 0.004 230);          /* faint blue-white */
-  --foreground: oklch(0.22 0.02 240);            /* deep blue-black */
-  --card: oklch(1 0 0);                           /* pure white */
-  --card-foreground: oklch(0.22 0.02 240);
+  --background: oklch(0.99 0.006 80);              /* warm cream-white */
+  --foreground: oklch(0.24 0.018 40);             /* warm near-black */
+  --card: oklch(1 0 0);                            /* pure white */
+  --card-foreground: oklch(0.24 0.018 40);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.22 0.02 240);
-  --primary: oklch(0.62 0.15 238);               /* Columbia blue */
-  --primary-foreground: oklch(0.99 0.005 230);
-  --secondary: oklch(0.94 0.03 230);             /* pale blue tint */
-  --secondary-foreground: oklch(0.3 0.04 238);
-  --muted: oklch(0.96 0.012 230);
-  --muted-foreground: oklch(0.5 0.025 235);
-  --accent: oklch(0.5 0.17 245);                  /* deeper royal blue */
-  --accent-foreground: oklch(0.99 0.005 230);
+  --popover-foreground: oklch(0.24 0.018 40);
+  --primary: oklch(0.62 0.17 38);                  /* terracotta */
+  --primary-foreground: oklch(0.99 0.005 80);
+  --secondary: oklch(0.95 0.025 70);              /* soft peach cream */
+  --secondary-foreground: oklch(0.32 0.04 40);
+  --muted: oklch(0.96 0.012 70);
+  --muted-foreground: oklch(0.5 0.022 50);
+  --accent: oklch(0.55 0.13 145);                  /* sage green — success/KPI */
+  --accent-foreground: oklch(0.99 0.005 145);
   --destructive: oklch(0.6 0.22 25);
-  --border: oklch(0.9 0.025 230);                 /* soft blue border */
-  --input: oklch(0.93 0.025 230);
-  --ring: oklch(0.62 0.15 238);
-  --chart-1: oklch(0.62 0.15 238);
-  --chart-2: oklch(0.5 0.17 245);
-  --chart-3: oklch(0.78 0.1 220);
-  --chart-4: oklch(0.45 0.14 250);
-  --chart-5: oklch(0.7 0.12 200);
-  --sidebar: oklch(0.995 0.004 230);
-  --sidebar-foreground: oklch(0.22 0.02 240);
-  --sidebar-primary: oklch(0.62 0.15 238);
-  --sidebar-primary-foreground: oklch(0.99 0.005 230);
-  --sidebar-accent: oklch(0.94 0.03 230);
-  --sidebar-accent-foreground: oklch(0.3 0.04 238);
-  --sidebar-border: oklch(0.9 0.025 230);
-  --sidebar-ring: oklch(0.62 0.15 238);
+  --border: oklch(0.9 0.022 60);                   /* warm sand border */
+  --input: oklch(0.93 0.022 60);
+  --ring: oklch(0.62 0.17 38);
+  --chart-1: oklch(0.62 0.17 38);
+  --chart-2: oklch(0.55 0.13 145);
+  --chart-3: oklch(0.78 0.11 70);
+  --chart-4: oklch(0.5 0.16 25);
+  --chart-5: oklch(0.7 0.13 280);
+  --sidebar: oklch(0.99 0.006 80);
+  --sidebar-foreground: oklch(0.24 0.018 40);
+  --sidebar-primary: oklch(0.62 0.17 38);
+  --sidebar-primary-foreground: oklch(0.99 0.005 80);
+  --sidebar-accent: oklch(0.95 0.025 70);
+  --sidebar-accent-foreground: oklch(0.32 0.04 40);
+  --sidebar-border: oklch(0.9 0.022 60);
+  --sidebar-ring: oklch(0.62 0.17 38);
 }
 
 .dark {
-  --background: oklch(0.18 0.02 240);
-  --foreground: oklch(0.97 0.01 230);
-  --card: oklch(0.23 0.025 240);
-  --card-foreground: oklch(0.97 0.01 230);
-  --popover: oklch(0.23 0.025 240);
-  --popover-foreground: oklch(0.97 0.01 230);
-  --primary: oklch(0.66 0.15 238);
-  --primary-foreground: oklch(0.18 0.02 240);
-  --secondary: oklch(0.3 0.03 240);
-  --secondary-foreground: oklch(0.97 0.01 230);
-  --muted: oklch(0.3 0.015 240);
-  --muted-foreground: oklch(0.72 0.02 235);
-  --accent: oklch(0.55 0.16 245);
-  --accent-foreground: oklch(0.97 0.01 230);
+  --background: oklch(0.18 0.015 40);
+  --foreground: oklch(0.96 0.008 80);
+  --card: oklch(0.23 0.02 40);
+  --card-foreground: oklch(0.96 0.008 80);
+  --popover: oklch(0.23 0.02 40);
+  --popover-foreground: oklch(0.96 0.008 80);
+  --primary: oklch(0.68 0.17 40);                  /* terracotta, brighter for dark */
+  --primary-foreground: oklch(0.18 0.015 40);
+  --secondary: oklch(0.3 0.025 40);
+  --secondary-foreground: oklch(0.96 0.008 80);
+  --muted: oklch(0.3 0.015 40);
+  --muted-foreground: oklch(0.72 0.018 60);
+  --accent: oklch(0.6 0.14 145);
+  --accent-foreground: oklch(0.96 0.008 145);
   --destructive: oklch(0.65 0.2 25);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 12%);
-  --ring: oklch(0.66 0.15 238);
-  --chart-1: oklch(0.66 0.15 238);
-  --chart-2: oklch(0.55 0.16 245);
-  --chart-3: oklch(0.78 0.1 220);
-  --chart-4: oklch(0.5 0.14 250);
-  --chart-5: oklch(0.7 0.12 200);
-  --sidebar: oklch(0.23 0.025 240);
-  --sidebar-foreground: oklch(0.97 0.01 230);
-  --sidebar-primary: oklch(0.66 0.15 238);
-  --sidebar-primary-foreground: oklch(0.18 0.02 240);
-  --sidebar-accent: oklch(0.3 0.03 240);
-  --sidebar-accent-foreground: oklch(0.97 0.01 230);
+  --ring: oklch(0.68 0.17 40);
+  --chart-1: oklch(0.68 0.17 40);
+  --chart-2: oklch(0.6 0.14 145);
+  --chart-3: oklch(0.78 0.11 70);
+  --chart-4: oklch(0.55 0.16 25);
+  --chart-5: oklch(0.7 0.13 280);
+  --sidebar: oklch(0.23 0.02 40);
+  --sidebar-foreground: oklch(0.96 0.008 80);
+  --sidebar-primary: oklch(0.68 0.17 40);
+  --sidebar-primary-foreground: oklch(0.18 0.015 40);
+  --sidebar-accent: oklch(0.3 0.025 40);
+  --sidebar-accent-foreground: oklch(0.96 0.008 80);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.66 0.15 238);
+  --sidebar-ring: oklch(0.68 0.17 40);
 }
 
 @layer base {
@@ -130,7 +131,7 @@
 /* Subtle paw-print dotted background pattern, used on hero/empty states. */
 .paw-grid-bg {
   background-image:
-    radial-gradient(circle at 1px 1px, oklch(0.62 0.15 238 / 0.16) 1px, transparent 0);
+    radial-gradient(circle at 1px 1px, oklch(0.62 0.17 38 / 0.16) 1px, transparent 0);
   background-size: 22px 22px;
 }
 
@@ -158,7 +159,7 @@
   width: 8px;
 }
 .paw-scroll::-webkit-scrollbar-thumb {
-  background-color: oklch(0.62 0.15 238 / 0.3);
+  background-color: oklch(0.62 0.17 38 / 0.3);
   border-radius: 9999px;
 }
 .paw-scroll::-webkit-scrollbar-track {

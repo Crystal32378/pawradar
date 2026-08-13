@@ -2,13 +2,11 @@
  * Generate a unique, shareable, URL-safe slug for an event.
  *
  * Format: meet_<petHint> with a short random suffix to avoid collisions
- * while keeping the link friendly and on-brand (paw.rs/meet_corgi_a1f3).
+ * while keeping the link friendly and on-brand on the deployed PawRadar URL.
  */
 
+import { randomBytes } from 'crypto';
 import { db } from '@/lib/db';
-
-const ALPHABET = 'abcdefghijklmnopqrstuvwxyz0123456789';
-const SUFFIX_LENGTH = 4;
 
 function sanitizePetName(name: string): string {
   const lowered = name.trim().toLowerCase();
@@ -23,11 +21,10 @@ function sanitizePetName(name: string): string {
 }
 
 function randomSuffix(): string {
-  let out = '';
-  for (let i = 0; i < SUFFIX_LENGTH; i++) {
-    out += ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
-  }
-  return out;
+  // 96 bits of cryptographic entropy. The slug is a public capability URL that
+  // reveals a future time and approximate location, so four Math.random chars
+  // are not sufficient.
+  return randomBytes(12).toString('base64url');
 }
 
 /**
@@ -36,7 +33,7 @@ function randomSuffix(): string {
  */
 export async function generateUniqueSlug(petName: string): Promise<string> {
   const hint = sanitizePetName(petName);
-  for (let attempt = 0; attempt < 8; attempt++) {
+  for (let attempt = 0; attempt < 4; attempt++) {
     const candidate = `meet_${hint}_${randomSuffix()}`;
     const existing = await db.event.findUnique({
       where: { slug: candidate },
@@ -47,5 +44,5 @@ export async function generateUniqueSlug(petName: string): Promise<string> {
     }
   }
   // Extremely unlikely fallback — append a longer suffix.
-  return `meet_${hint}_${randomSuffix()}${randomSuffix()}`;
+  return `meet_${hint}_${randomSuffix()}`;
 }

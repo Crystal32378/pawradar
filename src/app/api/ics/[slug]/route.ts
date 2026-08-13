@@ -27,6 +27,7 @@ export async function GET(_request: Request, { params }: RouteContext) {
       walkEnd: true,
       location: true,
       notes: true,
+      status: true,
     },
   });
 
@@ -35,6 +36,10 @@ export async function GET(_request: Request, { params }: RouteContext) {
       { error: '找不到這個散步事件' },
       { status: 404 },
     );
+  }
+
+  if (event.status === 'cancelled') {
+    return NextResponse.json({ error: '這場散步已取消' }, { status: 410 });
   }
 
   const ics = generateIcs(event);

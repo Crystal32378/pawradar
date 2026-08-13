@@ -6,33 +6,79 @@ generator client {
 }
 
 datasource db {
-  // PostgreSQL for production (Neon free tier on Vercel).
+  // Canonical provider: PostgreSQL (Neon in production).
+  // Local development uses a disposable PostgreSQL database or branch; do not
+  // edit this provider in-place because Prisma clients are provider-specific.
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-/// A PawRadar walk event created by a pet KOL.
+enum EventStatus {
+  active
+  cancelled
+}
+
+enum SubscriptionState {
+  active
+  muted
+  revoked
+}
+
+model User {
+  id             String   @id @default(cuid())
+  email          String   @unique
+  name           String?
+  igHandle       String?
+  password       String
+  sessionVersion Int      @default(1)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  events Event[]
+}
+
 model Event {
-  /// Internal cuid primary key
-  id        String   @id @default(cuid())
-  /// Short, shareable slug used in paw.rs/<slug> links (unique)
-  slug      String   @unique
-  /// Display name of the pet, e.g. "麻糬"
-  petName   String
-  /// Owner's Instagram handle, e.g. "@corgi_mochi"
+  id          String      @id @default(cuid())
+  slug        String      @unique
+  petName     String
   ownerHandle String
-  /// When the walk starts (UTC)
-  walkStart DateTime
-  /// When the walk ends (UTC), default walkStart + 1 hour
-  walkEnd   DateTime
-  /// Approximate location, e.g. "大安森林公園"
-  location  String
-  /// Optional notes shown to fans, e.g. "穿著紅色牽繩"
-  notes     String?
-  /// KPI: how many fans added this event to their calendar
-  addCount  Int      @default(0)
-  createdAt DateTime @default(now())
+  walkStart   DateTime
+  walkEnd     DateTime
+  location    String
+  notes       String?
+  status      EventStatus @default(active)
+  addCount    Int         @default(0)
+  ownerId     String?
+  owner       User?       @relation(fields: [ownerId], references: [id], onDelete: SetNull)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  subscriptions Subscription[]
+
+  @@index([ownerId])
+}
+
+model Subscription {
+  id                   String            @id @default(cuid())
+  onesignalSubscriptionId String
+  eventId              String
+  event                Event             @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  state                SubscriptionState @default(active)
+  unsubscribeTokenHash String            @unique
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
+
+  @@unique([onesignalSubscriptionId, eventId])
+  @@index([eventId, state])
+}
+
+/// Durable fixed-window buckets used by public and authentication endpoints.
+/// Rows are intentionally opaque: keys are HMAC-hashed before storage.
+model RateLimitBucket {
+  key       String   @id
+  count     Int
+  resetAt   DateTime
   updatedAt DateTime @updatedAt
 
-  @@index([slug])
+  @@index([resetAt])
 }

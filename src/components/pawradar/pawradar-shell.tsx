@@ -3,8 +3,6 @@
 import { useEffect } from 'react';
 import { PawNav } from './nav';
 import { PawHero } from './hero';
-import { EventForm } from './event-form';
-import { EventList } from './event-list';
 import { FanInvite } from './fan-invite';
 import { PawFooter } from './footer';
 import { usePawRadar } from '@/store/pawradar';
@@ -17,18 +15,20 @@ interface FanEventSeed {
   walkEnd: string;
   location: string;
   notes: string | null;
+  status: 'active' | 'cancelled';
 }
 
 /**
- * Top-level shell that decides which view to render based on the
- * Zustand store (which is itself seeded from the URL ?event=<slug>).
+ * Public landing shell — renders either the fan invite (when seeded
+ * with an event) or the marketing hero + CTA.
+ *
+ * Phase 1 change: creator dashboard is no longer embedded here — it
+ * lives at /dashboard (auth-gated). The landing CTA points there.
  */
 export function PawRadarShell({ initialEvent }: { initialEvent?: FanEventSeed }) {
   const view = usePawRadar((s) => s.view);
   const fanEvent = usePawRadar((s) => s.fanEvent);
   const enterFanView = usePawRadar((s) => s.enterFanView);
-  const setFanLoading = usePawRadar((s) => s.setFanLoading);
-  const setFanError = usePawRadar((s) => s.setFanError);
   const exitFanView = usePawRadar((s) => s.exitFanView);
 
   // If the server handed us an initial event (because the URL had ?event=slug),
@@ -67,29 +67,11 @@ export function PawRadarShell({ initialEvent }: { initialEvent?: FanEventSeed })
 
   return (
     <div className="flex min-h-screen flex-col">
-      <PawNav />
+      <PawNav variant="landing" />
       <main className="flex-1">
-        {view === 'fan' ? (
-          <FanInvite />
-        ) : (
-          <>
-            <PawHero />
-            <DashboardSection />
-          </>
-        )}
+        {view === 'fan' ? <FanInvite /> : <PawHero />}
       </main>
       <PawFooter />
     </div>
-  );
-}
-
-function DashboardSection() {
-  return (
-    <section className="mx-auto max-w-6xl px-4 pb-16 pt-2 sm:px-6">
-      <div className="grid gap-5 lg:grid-cols-[1.05fr_1fr] lg:gap-6">
-        <EventForm />
-        <EventList />
-      </div>
-    </section>
   );
 }
