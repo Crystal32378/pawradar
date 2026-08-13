@@ -86,9 +86,10 @@ export async function DELETE(request: Request) {
   }
   const subscription = await db.subscription.findUnique({
     where: { unsubscribeTokenHash: tokenHash(parsed.data.unsubscribeToken) },
-    select: { id: true },
+    select: { id: true, state: true },
   });
-  if (!subscription) {
+  // Single-use token: a revoked subscription must not be revocable again.
+  if (!subscription || subscription.state !== 'active') {
     return NextResponse.json({ error: '退訂連結無效或已失效' }, { status: 404 });
   }
   await db.subscription.update({
