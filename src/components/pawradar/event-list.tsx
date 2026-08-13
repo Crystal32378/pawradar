@@ -156,7 +156,8 @@ interface EventCardProps {
 function EventCard({ event, onPreview, onCopy, onDelete }: EventCardProps) {
   const [copied, setCopied] = useState(false);
   const start = new Date(event.walkStart);
-  const monthDay = `${start.getMonth() + 1}月${start.getDate()}日`;
+  const month = start.getMonth() + 1;
+  const day = start.getDate();
   const time = `${String(start.getHours()).padStart(2, '0')}:${String(start.getMinutes()).padStart(2, '0')}`;
 
   const handleCopy = () => {
@@ -171,11 +172,9 @@ function EventCard({ event, onPreview, onCopy, onDelete }: EventCardProps) {
         {/* Date block */}
         <div className="flex h-14 w-14 flex-shrink-0 flex-col items-center justify-center rounded-xl bg-primary/10 text-primary">
           <span className="text-[10px] font-medium uppercase leading-none">
-            {monthDay.split('月')[0]}月
+            {month}月
           </span>
-          <span className="text-xl font-bold leading-tight">
-            {start.getDate()}
-          </span>
+          <span className="text-xl font-bold leading-tight">{day}</span>
         </div>
 
         {/* Content */}
@@ -191,7 +190,7 @@ function EventCard({ event, onPreview, onCopy, onDelete }: EventCardProps) {
           <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
             <span className="inline-flex items-center gap-1">
               <CalendarClock size={12} />
-              {monthDay} · {time}
+              {month}月{day}日 · {time}
             </span>
             <span className="inline-flex items-center gap-1">
               <MapPin size={12} />

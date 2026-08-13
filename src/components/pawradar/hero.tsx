@@ -40,7 +40,7 @@ export function PawHero() {
             >
               <path
                 d="M2 9C50 3 150 3 198 9"
-                stroke="oklch(0.55 0.13 145)"
+                stroke="var(--accent)"
                 strokeWidth="3.5"
                 strokeLinecap="round"
               />
