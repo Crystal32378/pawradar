@@ -65,12 +65,12 @@ function SignupForm() {
 
   return (
     <div className="mx-auto max-w-md px-4 py-12">
-      <div className="rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-8">
+      <div className="rounded-3xl border border-border bg-card p-6 shadow-[0_8px_24px_oklch(0.53_0.16_35/0.07)] sm:p-8">
         <div className="mb-6 text-center">
           <div className="flex justify-center">
             <PawRadarLogo size="md" />
           </div>
-          <h1 className="mt-4 text-2xl font-bold">建立創作者帳號</h1>
+          <h1 className="mt-4 text-2xl font-extrabold tracking-tight">建立創作者帳號</h1>
           <p className="mt-1 text-sm text-muted-foreground">
             開始建立你的散步連結
           </p>

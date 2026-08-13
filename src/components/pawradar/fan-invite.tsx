@@ -43,6 +43,7 @@ export function FanInvite({ initialEvent }: { initialEvent?: FanEvent }) {
   const [error, setError] = useState<string | null>(null);
   const [adding, setAdding] = useState(false);
   const [showNotifyDialog, setShowNotifyDialog] = useState(false);
+  const [added, setAdded] = useState(false);
 
   useEffect(() => {
     if (initialEvent) {
@@ -90,6 +91,7 @@ export function FanInvite({ initialEvent }: { initialEvent?: FanEvent }) {
       await new Promise((r) => setTimeout(r, 400));
       window.location.href = `/api/ics/${event.slug}`;
       toast.success('已啟動日曆邀請 — 請在跳出的視窗按下「加入」');
+      setAdded(true);
       // After ICS download initiates, show opt-in dialog if feature flag on.
       // Delay slightly so the download toast is visible first.
       if (isOnesignalEnabled) {
@@ -170,7 +172,7 @@ export function FanInvite({ initialEvent }: { initialEvent?: FanEvent }) {
         </div>
 
         {/* The invite card */}
-        <div className="paw-rise overflow-hidden rounded-3xl border border-border bg-card shadow-xl shadow-primary/5">
+        <div className="paw-rise overflow-hidden rounded-3xl border border-border bg-card shadow-[0_8px_24px_oklch(0.53_0.16_35/0.08)]">
           {/* Header strip */}
           <div className="relative bg-gradient-to-br from-primary to-primary/80 px-6 py-7 text-primary-foreground">
             <div className="paw-grid-bg absolute inset-0 opacity-20" aria-hidden />
@@ -215,12 +217,12 @@ export function FanInvite({ initialEvent }: { initialEvent?: FanEvent }) {
           </div>
 
           {/* Add to calendar CTA */}
-          <div className="border-t border-border bg-secondary/30 px-6 py-5">
+          <div className="border-t border-border bg-secondary px-6 py-5">
             <Button
               onClick={handleAddToCalendar}
               disabled={adding || event.status === 'cancelled'}
               size="lg"
-              className="w-full gap-2 rounded-2xl bg-primary py-6 text-base font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-transform hover:scale-[1.02] active:scale-[0.99]"
+              className="w-full gap-2 rounded-2xl bg-primary py-6 text-base font-bold text-primary-foreground shadow-lg shadow-primary/20 transition-transform hover:scale-[1.02] active:scale-[0.99] focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ring"
             >
               {event.status === 'cancelled' ? (
                 <>活動已取消</>
@@ -241,6 +243,16 @@ export function FanInvite({ initialEvent }: { initialEvent?: FanEvent }) {
             </p>
           </div>
         </div>
+
+        {/* Success banner — shown after ICS download */}
+        {added && (
+          <div
+            className="paw-rise mt-4 flex items-center gap-2 rounded-2xl border border-success/35 bg-success/10 px-4 py-3 text-sm font-bold text-success"
+          >
+            <CalendarPlus size={16} className="flex-shrink-0" />
+            已加入你的日曆{isOnesignalEnabled ? ' — 可再開啟異動通知' : ''}
+          </div>
+        )}
 
         {/* Trust strip */}
         <div className="mt-5 grid grid-cols-3 gap-2 text-center">
@@ -282,7 +294,7 @@ function DetailRow({
 }) {
   return (
     <div className="flex items-start gap-3">
-      <div className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-accent/20 text-accent-foreground">
+      <div className="mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-[0.6rem] bg-accent/20 text-accent-foreground">
         {icon}
       </div>
       <div className="min-w-0 flex-1">

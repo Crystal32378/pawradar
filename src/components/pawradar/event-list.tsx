@@ -239,10 +239,10 @@ function EventCard({ event, onPreview, onCopy, onEdit, onCancel, onDelete }: Eve
   };
 
   return (
-    <div className={`group rounded-2xl border bg-background/50 p-4 transition-all hover:shadow-sm ${event.status === 'cancelled' ? 'border-destructive/30 opacity-70' : 'border-border hover:border-primary/40'}`}>
+    <div className={`group rounded-2xl border bg-card p-4 transition-all hover:shadow-sm ${event.status === 'cancelled' ? 'border-destructive/30 opacity-70' : 'border-border hover:border-primary/40'}`}>
       <div className="flex items-start gap-3">
         {/* Date block */}
-        <div className="flex h-14 w-14 flex-shrink-0 flex-col items-center justify-center rounded-xl bg-primary/10 text-primary">
+        <div className="flex h-[3.2rem] w-[3.2rem] flex-shrink-0 flex-col items-center justify-center rounded-[0.7rem] bg-primary/10 text-primary">
           <span className="text-[10px] font-medium uppercase leading-none">
             {monthDay.split('月')[0]}月
           </span>
