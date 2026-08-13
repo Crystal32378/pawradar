@@ -84,17 +84,18 @@ export async function DELETE(request: Request) {
   if (!parsed.success) {
     return NextResponse.json({ error: '退訂連結無效' }, { status: 400 });
   }
-  const subscription = await db.subscription.findUnique({
-    where: { unsubscribeTokenHash: tokenHash(parsed.data.unsubscribeToken) },
-    select: { id: true, state: true },
-  });
-  // Single-use token: a revoked subscription must not be revocable again.
-  if (!subscription || subscription.state !== 'active') {
-    return NextResponse.json({ error: '退訂連結無效或已失效' }, { status: 404 });
-  }
-  await db.subscription.update({
-    where: { id: subscription.id },
+  // Make redemption atomic: concurrent requests may both observe an active
+  // subscription if we read before updating, but only one conditional update
+  // can transition it from active to revoked.
+  const revoked = await db.subscription.updateMany({
+    where: {
+      unsubscribeTokenHash: tokenHash(parsed.data.unsubscribeToken),
+      state: 'active',
+    },
     data: { state: 'revoked' },
   });
+  if (revoked.count !== 1) {
+    return NextResponse.json({ error: '退訂連結無效或已失效' }, { status: 404 });
+  }
   return NextResponse.json({ ok: true });
 }

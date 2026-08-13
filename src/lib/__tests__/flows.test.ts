@@ -279,11 +279,18 @@ vi.mock('@/lib/db', () => ({
         );
         return row ? selectFields(row, select) : null;
       },
-      update: async ({ where, data, select }: { where: any; data: any; select?: any }) => {
-        const row = memDb.subscriptions.get(where.id);
-        if (!row) throw new Error('subscription not found');
-        Object.assign(row, data);
-        return selectFields(row, select);
+      updateMany: async ({ where, data }: { where: any; data: any }) => {
+        let count = 0;
+        for (const row of memDb.subscriptions.values()) {
+          if (
+            row.unsubscribeTokenHash === where.unsubscribeTokenHash &&
+            row.state === where.state
+          ) {
+            Object.assign(row, data);
+            count += 1;
+          }
+        }
+        return { count };
       },
     },
   },
