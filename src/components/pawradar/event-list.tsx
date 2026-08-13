@@ -278,7 +278,7 @@ function EventCard({ event, onPreview, onCopy, onEdit, onCancel, onDelete }: Eve
             <code className="rounded-md bg-secondary px-2 py-0.5 text-[11px] font-medium text-secondary-foreground break-all">
               ?event={event.slug}
             </code>
-            <span className="inline-flex items-center gap-1 rounded-md bg-success/10 px-2 py-0.5 text-[11px] font-medium text-success-foreground">
+            <span className="inline-flex items-center gap-1 rounded-md bg-success/10 px-2 py-0.5 text-[11px] font-medium text-success">
               <TrendingUp size={11} />
               {event.addCount} 次加入
             </span>
