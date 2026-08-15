@@ -47,7 +47,7 @@ git push -u origin main
 3. 建好後，在 dashboard 找到「**Connection string**」，長這樣：
 
 ```text
-postgresql://neondb_owner:password@ep-xxx-xxx.us-east-2.aws.neon.tech/neondb?sslmode=require
+postgresql://neondb_owner:<YOUR_NEON_PASSWORD>@ep-xxx-xxx.us-east-2.aws.neon.tech/neondb?sslmode=require
 ```
 
 4. 複製這串字串，等等要用。
@@ -85,10 +85,10 @@ https://pawradar-xxx.vercel.app
 ```bash
 cd ~/pawradar
 
-export DATABASE_URL="postgresql://neondb_owner:password@ep-xxx-xxx.us-east-2.aws.neon.tech/neondb?sslmode=require"
+export DATABASE_URL="postgresql://neondb_owner:<YOUR_NEON_PASSWORD>@ep-xxx-xxx.us-east-2.aws.neon.tech/neondb?sslmode=require"
 
 # Windows PowerShell:
-# $env:DATABASE_URL="postgresql://neondb_owner:password@ep-xxx-xxx.us-east-2.aws.neon.tech/neondb?sslmode=require"
+# $env:DATABASE_URL="postgresql://neondb_owner:<YOUR_NEON_PASSWORD>@ep-xxx-xxx.us-east-2.aws.neon.tech/neondb?sslmode=require"
 
 bun install
 bun run db:push

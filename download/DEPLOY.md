@@ -56,7 +56,7 @@ git push -u origin main
 2. 點「**New Project**」，名稱打 `pawradar`，region 選 `AWS US East`（離大部分使用者近）
 3. 建好後，在 dashboard 找到「**Connection string**」，長這樣：
    ```
-   postgresql://neondb_owner:password@ep-xxx-xxx.us-east-2.aws.neon.tech/neondb?sslmode=require
+   postgresql://neondb_owner:<YOUR_NEON_PASSWORD>@ep-xxx-xxx.us-east-2.aws.neon.tech/neondb?sslmode=require
    ```
 4. **複製這串字串**，等等要用
 
@@ -93,10 +93,10 @@ https://pawradar-xxx.vercel.app
 cd ~/pawradar
 
 # 暫時把 Neon 的 connection string 設成環境變數
-export DATABASE_URL="postgresql://neondb_owner:password@ep-xxx-xxx.us-east-2.aws.neon.tech/neondb?sslmode=require"
+export DATABASE_URL="postgresql://neondb_owner:<YOUR_NEON_PASSWORD>@ep-xxx-xxx.us-east-2.aws.neon.tech/neondb?sslmode=require"
 
 # Windows PowerShell 用這個：
-# $env:DATABASE_URL="postgresql://neondb_owner:password@ep-xxx-xxx.us-east-2.aws.neon.tech/neondb?sslmode=require"
+# $env:DATABASE_URL="postgresql://neondb_owner:<YOUR_NEON_PASSWORD>@ep-xxx-xxx.us-east-2.aws.neon.tech/neondb?sslmode=require"
 
 # 推送 schema 到 Neon
 bun install
