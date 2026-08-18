@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -12,8 +12,6 @@ import { toast } from 'sonner';
 
 function LoginForm() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const from = searchParams.get('from') ?? '/dashboard';
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -36,7 +34,7 @@ function LoginForm() {
         return;
       }
       toast.success('登入成功');
-      router.push(from);
+      router.push(getReturnPath());
       router.refresh();
     } catch {
       setError('網路錯誤');
@@ -117,7 +115,7 @@ function LoginForm() {
 
         <div className="mt-6 text-center text-sm text-muted-foreground">
           還沒有帳號？{' '}
-          <Link href={`/signup?from=${encodeURIComponent(from)}`} className="font-medium text-primary hover:underline">
+          <Link href="/signup?from=%2Fdashboard" className="font-medium text-primary hover:underline">
             建立創作者帳號
           </Link>
         </div>
@@ -132,9 +130,12 @@ function LoginForm() {
 }
 
 export default function LoginPage() {
-  return (
-    <Suspense fallback={<div className="mx-auto max-w-md px-4 py-12">載入中…</div>}>
-      <LoginForm />
-    </Suspense>
-  );
+  return <LoginForm />;
+}
+
+function getReturnPath(): string {
+  const requested = new URLSearchParams(window.location.search).get('from');
+  return requested?.startsWith('/') && !requested.startsWith('//')
+    ? requested
+    : '/dashboard';
 }

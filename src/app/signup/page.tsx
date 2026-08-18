@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -12,8 +12,6 @@ import { toast } from 'sonner';
 
 function SignupForm() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const from = searchParams.get('from') ?? '/dashboard';
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -53,7 +51,7 @@ function SignupForm() {
         return;
       }
       toast.success('歡迎加入 PawRadar！');
-      router.push(from);
+      router.push(getReturnPath());
       router.refresh();
     } catch {
       setError('網路錯誤，請再試一次');
@@ -161,7 +159,7 @@ function SignupForm() {
 
         <div className="mt-6 text-center text-sm text-muted-foreground">
           已有帳號？{' '}
-          <Link href={`/login?from=${encodeURIComponent(from)}`} className="font-medium text-primary hover:underline">
+          <Link href="/login?from=%2Fdashboard" className="font-medium text-primary hover:underline">
             登入
           </Link>
         </div>
@@ -171,9 +169,12 @@ function SignupForm() {
 }
 
 export default function SignupPage() {
-  return (
-    <Suspense fallback={<div className="mx-auto max-w-md px-4 py-12">載入中…</div>}>
-      <SignupForm />
-    </Suspense>
-  );
+  return <SignupForm />;
+}
+
+function getReturnPath(): string {
+  const requested = new URLSearchParams(window.location.search).get('from');
+  return requested?.startsWith('/') && !requested.startsWith('//')
+    ? requested
+    : '/dashboard';
 }
