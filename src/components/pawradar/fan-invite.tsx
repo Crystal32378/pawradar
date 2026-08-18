@@ -16,6 +16,8 @@ import {
 } from 'lucide-react';
 import { usePawRadar } from '@/store/pawradar';
 import { toast } from 'sonner';
+import { isOnesignalEnabled } from '@/lib/onesignal-config';
+import { NotifyOptInDialog } from './notify-opt-in-dialog';
 
 interface FanEvent {
   slug: string;
@@ -26,6 +28,7 @@ interface FanEvent {
   location: string;
   notes: string | null;
   addCount?: number;
+  status: 'active' | 'cancelled';
 }
 
 /**
@@ -39,6 +42,8 @@ export function FanInvite({ initialEvent }: { initialEvent?: FanEvent }) {
   const [loading, setLoading] = useState(!initialEvent);
   const [error, setError] = useState<string | null>(null);
   const [adding, setAdding] = useState(false);
+  const [showNotifyDialog, setShowNotifyDialog] = useState(false);
+  const [added, setAdded] = useState(false);
 
   useEffect(() => {
     if (initialEvent) {
@@ -86,6 +91,12 @@ export function FanInvite({ initialEvent }: { initialEvent?: FanEvent }) {
       await new Promise((r) => setTimeout(r, 400));
       window.location.href = `/api/ics/${event.slug}`;
       toast.success('已啟動日曆邀請 — 請在跳出的視窗按下「加入」');
+      setAdded(true);
+      // After ICS download initiates, show opt-in dialog if feature flag on.
+      // Delay slightly so the download toast is visible first.
+      if (isOnesignalEnabled) {
+        setTimeout(() => setShowNotifyDialog(true), 1500);
+      }
     } catch {
       toast.error('下載失敗，請再試一次');
     } finally {
@@ -156,12 +167,12 @@ export function FanInvite({ initialEvent }: { initialEvent?: FanEvent }) {
       <div className="relative mx-auto max-w-md px-4 py-8 sm:py-12">
         {/* Tiny label mimicking iOS calendar invite header */}
         <div className="paw-rise mb-4 flex items-center justify-center gap-2 text-xs font-medium text-muted-foreground">
-          <Sparkles size={13} className="text-primary" />
+          <Sparkles size={13} className="text-accent-foreground" />
           散步邀請
         </div>
 
         {/* The invite card */}
-        <div className="paw-rise overflow-hidden rounded-3xl border border-border bg-card shadow-xl shadow-primary/5">
+        <div className="paw-rise overflow-hidden rounded-3xl border border-border bg-card shadow-[0_8px_24px_oklch(0.53_0.16_35/0.08)]">
           {/* Header strip */}
           <div className="relative bg-gradient-to-br from-primary to-primary/80 px-6 py-7 text-primary-foreground">
             <div className="paw-grid-bg absolute inset-0 opacity-20" aria-hidden />
@@ -171,7 +182,7 @@ export function FanInvite({ initialEvent }: { initialEvent?: FanEvent }) {
                 PawRadar 邀請
               </div>
               <h1 className="mt-3 text-2xl font-bold leading-tight">
-                {event.petName}的散步時間
+                  {event.status === 'cancelled' ? `${event.petName}的散步已取消` : `${event.petName}的散步時間`}
               </h1>
               <p className="mt-1 text-xs text-primary-foreground/80">
                 主理人 {event.ownerHandle}
@@ -206,14 +217,16 @@ export function FanInvite({ initialEvent }: { initialEvent?: FanEvent }) {
           </div>
 
           {/* Add to calendar CTA */}
-          <div className="border-t border-border bg-secondary/30 px-6 py-5">
+          <div className="border-t border-border bg-secondary px-6 py-5">
             <Button
               onClick={handleAddToCalendar}
-              disabled={adding}
+              disabled={adding || event.status === 'cancelled'}
               size="lg"
-              className="w-full gap-2 rounded-2xl bg-primary py-6 text-base font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-transform hover:scale-[1.02] active:scale-[0.99]"
+              className="w-full gap-2 rounded-2xl bg-primary py-6 text-base font-bold text-primary-foreground shadow-lg shadow-primary/20 transition-transform hover:scale-[1.02] active:scale-[0.99] focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ring"
             >
-              {adding ? (
+              {event.status === 'cancelled' ? (
+                <>活動已取消</>
+              ) : adding ? (
                 <>
                   <span className="h-4 w-4 animate-spin rounded-full border-2 border-primary-foreground/40 border-t-primary-foreground" />
                   準備日曆邀請中…
@@ -231,6 +244,16 @@ export function FanInvite({ initialEvent }: { initialEvent?: FanEvent }) {
           </div>
         </div>
 
+        {/* Success banner — shown after ICS download */}
+        {added && (
+          <div
+            className="paw-rise mt-4 flex items-center gap-2 rounded-2xl border border-success/35 bg-success/10 px-4 py-3 text-sm font-bold text-success"
+          >
+            <CalendarPlus size={16} className="flex-shrink-0" />
+            已加入你的日曆{isOnesignalEnabled ? ' — 可再開啟異動通知' : ''}
+          </div>
+        )}
+
         {/* Trust strip */}
         <div className="mt-5 grid grid-cols-3 gap-2 text-center">
           <TrustItem icon={<ShieldCheck size={14} />} label="隱私安全" />
@@ -243,6 +266,17 @@ export function FanInvite({ initialEvent }: { initialEvent?: FanEvent }) {
           PawRadar
         </div>
       </div>
+
+      {/* OneSignal opt-in dialog — only renders when feature flag enabled.
+          Shows after ICS download. See notify-opt-in-dialog.tsx */}
+      {event && (
+        <NotifyOptInDialog
+          eventSlug={event.slug}
+          petName={event.petName}
+          open={showNotifyDialog}
+          onOpenChange={setShowNotifyDialog}
+        />
+      )}
     </div>
   );
 }
@@ -260,7 +294,7 @@ function DetailRow({
 }) {
   return (
     <div className="flex items-start gap-3">
-      <div className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+      <div className="mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-[0.6rem] bg-accent/20 text-accent-foreground">
         {icon}
       </div>
       <div className="min-w-0 flex-1">
@@ -279,7 +313,7 @@ function DetailRow({
 function TrustItem({ icon, label }: { icon: React.ReactNode; label: string }) {
   return (
     <div className="flex flex-col items-center gap-1 rounded-xl border border-border bg-card/60 px-2 py-2.5">
-      <span className="text-primary">{icon}</span>
+      <span className="text-accent-foreground">{icon}</span>
       <span className="text-[10px] font-medium text-muted-foreground">
         {label}
       </span>

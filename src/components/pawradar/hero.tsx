@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { CalendarHeart, MapPin, ShieldCheck, Zap } from 'lucide-react';
 
 const VALUE_PROPS = [
@@ -13,18 +14,19 @@ const VALUE_PROPS = [
  */
 export function PawHero() {
   return (
-    <section className="relative overflow-hidden">
-      <div className="paw-grid-bg absolute inset-0 opacity-60" aria-hidden />
-      <div className="relative mx-auto max-w-6xl px-4 pb-10 pt-10 sm:px-6 sm:pt-16">
-        <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur">
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-70" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
-          </span>
-          Columbia 校友狗聚・互動外掛
-        </div>
+    <section className="mx-auto w-full max-w-6xl px-4 sm:px-6">
+      <div className="relative overflow-hidden rounded-3xl border border-border bg-background px-5 py-10 sm:px-10 sm:py-14">
+        <div className="paw-grid-bg absolute inset-0 opacity-50" aria-hidden />
+        <div className="relative">
+          <div className="inline-flex items-center gap-2 rounded-full border border-accent/40 bg-accent/15 px-3 py-1 text-xs font-bold text-accent-foreground backdrop-blur">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-70" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
+            </span>
+            寵物 KOL · 散步連結產生器
+          </div>
 
-        <h1 className="mt-5 max-w-3xl text-4xl font-bold leading-[1.1] tracking-tight sm:text-5xl md:text-6xl">
+          <h1 className="mt-5 max-w-3xl text-4xl font-extrabold leading-[1.1] tracking-tight sm:text-5xl">
           快來遇見
           <br className="hidden sm:block" />
           你的{' '}
@@ -39,7 +41,7 @@ export function PawHero() {
             >
               <path
                 d="M2 9C50 3 150 3 198 9"
-                stroke="oklch(0.5 0.17 245)"
+                stroke="var(--accent)"
                 strokeWidth="3.5"
                 strokeLinecap="round"
               />
@@ -52,13 +54,13 @@ export function PawHero() {
         </p>
 
         <div className="mt-6 flex flex-wrap items-center gap-3">
-          <a
-            href="#create"
-            className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-transform hover:scale-[1.03] active:scale-[0.98]"
+          <Link
+            href="/dashboard"
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground shadow-[0_4px_16px_oklch(0.53_0.16_35/0.25)] transition-transform hover:scale-[1.03] active:scale-[0.98] focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ring"
           >
             <MapPin size={15} />
             建立散步連結
-          </a>
+          </Link>
         </div>
 
         {/* Compact value props */}
@@ -68,9 +70,9 @@ export function PawHero() {
             return (
               <div
                 key={v.title}
-                className="flex items-center gap-3 rounded-2xl border border-border bg-card/70 p-4 backdrop-blur"
+                className="flex items-center gap-3 rounded-2xl border border-border bg-card/70 p-4 backdrop-blur transition-transform duration-150 hover:-translate-y-0.5 hover:border-primary/35"
               >
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-accent/20 text-accent-foreground">
                   <Icon size={18} />
                 </div>
                 <div className="min-w-0">
@@ -80,6 +82,7 @@ export function PawHero() {
               </div>
             );
           })}
+        </div>
         </div>
       </div>
     </section>

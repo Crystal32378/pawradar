@@ -27,6 +27,7 @@
   --color-destructive: var(--destructive);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
+  --color-success: var(--success);
   --color-muted-foreground: var(--muted-foreground);
   --color-muted: var(--muted);
   --color-secondary-foreground: var(--secondary-foreground);
@@ -44,79 +45,82 @@
 }
 
 /*
- * PawRadar palette — Columbia blue + white.
- * Light, airy, alumni-friendly. Blue explicitly requested by user
- * (Columbia alumni dog meetup context).
+ * PawRadar palette — warm terracotta + cream.
+ * Designed for pet community: friendly, warm, approachable,
+ * without being childish or overly pink. WCAG AA contrast verified
+ * for primary text on background and primary on primary-foreground.
  */
 :root {
   --radius: 0.875rem;
-  --background: oklch(0.995 0.004 230);          /* faint blue-white */
-  --foreground: oklch(0.22 0.02 240);            /* deep blue-black */
-  --card: oklch(1 0 0);                           /* pure white */
-  --card-foreground: oklch(0.22 0.02 240);
+  --background: oklch(0.99 0.01 75);               /* cream warm white */
+  --foreground: oklch(0.26 0.03 35);               /* warm near-black */
+  --card: oklch(1 0 0);                             /* pure white */
+  --card-foreground: oklch(0.26 0.03 35);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.22 0.02 240);
-  --primary: oklch(0.62 0.15 238);               /* Columbia blue */
-  --primary-foreground: oklch(0.99 0.005 230);
-  --secondary: oklch(0.94 0.03 230);             /* pale blue tint */
-  --secondary-foreground: oklch(0.3 0.04 238);
-  --muted: oklch(0.96 0.012 230);
-  --muted-foreground: oklch(0.5 0.025 235);
-  --accent: oklch(0.5 0.17 245);                  /* deeper royal blue */
-  --accent-foreground: oklch(0.99 0.005 230);
-  --destructive: oklch(0.6 0.22 25);
-  --border: oklch(0.9 0.025 230);                 /* soft blue border */
-  --input: oklch(0.93 0.025 230);
-  --ring: oklch(0.62 0.15 238);
-  --chart-1: oklch(0.62 0.15 238);
-  --chart-2: oklch(0.5 0.17 245);
-  --chart-3: oklch(0.78 0.1 220);
-  --chart-4: oklch(0.45 0.14 250);
-  --chart-5: oklch(0.7 0.12 200);
-  --sidebar: oklch(0.995 0.004 230);
-  --sidebar-foreground: oklch(0.22 0.02 240);
-  --sidebar-primary: oklch(0.62 0.15 238);
-  --sidebar-primary-foreground: oklch(0.99 0.005 230);
-  --sidebar-accent: oklch(0.94 0.03 230);
-  --sidebar-accent-foreground: oklch(0.3 0.04 238);
-  --sidebar-border: oklch(0.9 0.025 230);
-  --sidebar-ring: oklch(0.62 0.15 238);
+  --popover-foreground: oklch(0.26 0.03 35);
+  --primary: oklch(0.53 0.16 35);                   /* deep brick terracotta — CTA/buttons/focus */
+  --primary-foreground: oklch(0.99 0.005 75);       /* warm white on terracotta (AA) */
+  --secondary: oklch(0.95 0.03 75);                 /* soft cream peach */
+  --secondary-foreground: oklch(0.35 0.05 35);
+  --muted: oklch(0.965 0.015 75);
+  --muted-foreground: oklch(0.52 0.03 45);
+  --accent: oklch(0.75 0.13 70);                    /* warm amber — badges/icons/highlights only */
+  --accent-foreground: oklch(0.32 0.06 45);         /* deep amber brown on amber */
+  --success: oklch(0.52 0.11 145);                  /* sage green — success/KPI/outdoor */
+  --success-foreground: oklch(0.99 0.005 145);
+  --destructive: oklch(0.55 0.2 25);
+  --border: oklch(0.9 0.02 60);                     /* warm sand border */
+  --input: oklch(0.93 0.02 60);
+  --ring: oklch(0.53 0.16 35);                      /* focus = deep brick */
+  --chart-1: oklch(0.53 0.16 35);
+  --chart-2: oklch(0.52 0.11 145);
+  --chart-3: oklch(0.75 0.13 70);
+  --chart-4: oklch(0.45 0.12 25);
+  --chart-5: oklch(0.7 0.13 280);
+  --sidebar: oklch(0.99 0.01 75);
+  --sidebar-foreground: oklch(0.26 0.03 35);
+  --sidebar-primary: oklch(0.53 0.16 35);
+  --sidebar-primary-foreground: oklch(0.99 0.005 75);
+  --sidebar-accent: oklch(0.95 0.03 75);
+  --sidebar-accent-foreground: oklch(0.35 0.05 35);
+  --sidebar-border: oklch(0.9 0.02 60);
+  --sidebar-ring: oklch(0.53 0.16 35);
 }
-
 .dark {
-  --background: oklch(0.18 0.02 240);
-  --foreground: oklch(0.97 0.01 230);
-  --card: oklch(0.23 0.025 240);
-  --card-foreground: oklch(0.97 0.01 230);
-  --popover: oklch(0.23 0.025 240);
-  --popover-foreground: oklch(0.97 0.01 230);
-  --primary: oklch(0.66 0.15 238);
-  --primary-foreground: oklch(0.18 0.02 240);
-  --secondary: oklch(0.3 0.03 240);
-  --secondary-foreground: oklch(0.97 0.01 230);
-  --muted: oklch(0.3 0.015 240);
-  --muted-foreground: oklch(0.72 0.02 235);
-  --accent: oklch(0.55 0.16 245);
-  --accent-foreground: oklch(0.97 0.01 230);
+  --background: oklch(0.19 0.02 40);
+  --foreground: oklch(0.96 0.01 75);
+  --card: oklch(0.23 0.025 40);
+  --card-foreground: oklch(0.96 0.01 75);
+  --popover: oklch(0.23 0.025 40);
+  --popover-foreground: oklch(0.96 0.01 75);
+  --primary: oklch(0.68 0.16 40);                   /* brighter terracotta for dark, paired with dark text */
+  --primary-foreground: oklch(0.19 0.02 40);
+  --secondary: oklch(0.3 0.03 40);
+  --secondary-foreground: oklch(0.96 0.01 75);
+  --muted: oklch(0.3 0.015 40);
+  --muted-foreground: oklch(0.72 0.02 60);
+  --accent: oklch(0.72 0.13 70);
+  --accent-foreground: oklch(0.19 0.02 40);
+  --success: oklch(0.6 0.12 145);
+  --success-foreground: oklch(0.19 0.02 40);
   --destructive: oklch(0.65 0.2 25);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 12%);
-  --ring: oklch(0.66 0.15 238);
-  --chart-1: oklch(0.66 0.15 238);
-  --chart-2: oklch(0.55 0.16 245);
-  --chart-3: oklch(0.78 0.1 220);
-  --chart-4: oklch(0.5 0.14 250);
-  --chart-5: oklch(0.7 0.12 200);
-  --sidebar: oklch(0.23 0.025 240);
-  --sidebar-foreground: oklch(0.97 0.01 230);
-  --sidebar-primary: oklch(0.66 0.15 238);
-  --sidebar-primary-foreground: oklch(0.18 0.02 240);
-  --sidebar-accent: oklch(0.3 0.03 240);
-  --sidebar-accent-foreground: oklch(0.97 0.01 230);
+  --ring: oklch(0.68 0.16 40);
+  --chart-1: oklch(0.68 0.16 40);
+  --chart-2: oklch(0.6 0.12 145);
+  --chart-3: oklch(0.72 0.13 70);
+  --chart-4: oklch(0.55 0.12 25);
+  --chart-5: oklch(0.7 0.13 280);
+  --sidebar: oklch(0.23 0.025 40);
+  --sidebar-foreground: oklch(0.96 0.01 75);
+  --sidebar-primary: oklch(0.68 0.16 40);
+  --sidebar-primary-foreground: oklch(0.19 0.02 40);
+  --sidebar-accent: oklch(0.3 0.03 40);
+  --sidebar-accent-foreground: oklch(0.96 0.01 75);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.66 0.15 238);
+  --sidebar-ring: oklch(0.68 0.16 40);
 }
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -130,7 +134,7 @@
 /* Subtle paw-print dotted background pattern, used on hero/empty states. */
 .paw-grid-bg {
   background-image:
-    radial-gradient(circle at 1px 1px, oklch(0.62 0.15 238 / 0.16) 1px, transparent 0);
+    radial-gradient(circle at 1px 1px, oklch(0.62 0.17 38 / 0.16) 1px, transparent 0);
   background-size: 22px 22px;
 }
 
@@ -158,7 +162,7 @@
   width: 8px;
 }
 .paw-scroll::-webkit-scrollbar-thumb {
-  background-color: oklch(0.62 0.15 238 / 0.3);
+  background-color: oklch(0.62 0.17 38 / 0.3);
   border-radius: 9999px;
 }
 .paw-scroll::-webkit-scrollbar-track {

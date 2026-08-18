@@ -1,33 +1,44 @@
 import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster as SonnerToaster } from "@/components/ui/sonner";
+import { Providers } from "@/components/providers";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "PawRadar — 快來遇見你的狗狗大寶貝！",
   description:
-    "Columbia 校友狗聚的互動外掛：把散步變成日曆連結，鄰居粉絲按一下就加入日曆。無需註冊、無需下載 App。",
+    "PawRadar 是寵物 KOL 的互動外掛：把散步變成日曆連結，鄰居粉絲按一下就加入日曆。無需註冊、無需下載 App。",
+  manifest: "/manifest.webmanifest",
   keywords: [
     "PawRadar",
-    "Columbia",
-    "校友",
+    "寵物 KOL",
     "狗聚",
-    "寵物",
+    "散步",
     "日曆",
     "ICS",
-    "散步",
     "互動外掛",
   ],
   authors: [{ name: "PawRadar" }],
   openGraph: {
     title: "PawRadar — 快來遇見你的狗狗大寶貝！",
     description:
-      "Columbia 校友狗聚互動外掛，把散步變成日曆連結。零摩擦、原生日曆推播、隱私安全。",
+      "寵物 KOL 互動外掛，把散步變成日曆連結。零摩擦、原生日曆推播、隱私安全。",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "PawRadar",
-    description: "快來遇見你的狗狗大寶貝 — Columbia 校友狗聚互動外掛",
+    description: "快來遇見你的狗狗大寶貝 — 寵物 KOL 互動外掛",
   },
 };
 
@@ -38,9 +49,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-TW" suppressHydrationWarning>
-      <body className="antialiased bg-background text-foreground">
-        {children}
-        <SonnerToaster position="top-center" richColors />
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
+      >
+        <Providers>
+          {children}
+          <SonnerToaster position="top-center" richColors />
+        </Providers>
       </body>
     </html>
   );
